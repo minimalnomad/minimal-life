@@ -1,0 +1,25 @@
+{
+  "expo": {
+    "name": "7-Day Minimal Life",
+    "slug": "minimal-life",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "minimal-life",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "backgroundColor": "#FFFFFF"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.minimalnomad.minimallife"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.minimalnomad.minimallife"
+    },
+    "plugins": ["expo-router", "expo-font", "expo-sqlite"]
+  }
+}
