@@ -56,22 +56,27 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
       >
         {/* Header */}
-        <View style={styles.header}>
-          <View style={styles.headerRow}>
-            <View>
-              <Text style={styles.stageLabel}>
-                Stage {currentStage} · Day {currentDay}
-              </Text>
-              <Text style={styles.dayTitle}>{dayData.title}</Text>
-            </View>
+        <View style={styles.headerRow}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.stageLabel}>
+              Stage {currentStage} · Day {currentDay}
+            </Text>
+            <Text style={styles.dayTitle}>{dayData.title}</Text>
+          </View>
+          <View style={styles.headerLinks}>
             <TouchableOpacity
               onPress={() => router.push("/(main)/stages")}
               activeOpacity={0.6}
             >
-              <Text style={styles.viewAllLink}>All days →</Text>
+              <Text style={styles.viewAllLink}>All days</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => router.push("/(main)/profile")}
+              activeOpacity={0.6}
+            >
+              <Text style={styles.viewAllLink}>Profile</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.dayDescription}>{dayData.description}</Text>
         </View>
 
         {/* Quote */}
@@ -142,6 +147,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-start",
+  },
+  headerLinks: {
+    gap: spacing.md,
+    alignItems: "flex-end",
   },
   stageLabel: {
     fontFamily: font.familyLight,
