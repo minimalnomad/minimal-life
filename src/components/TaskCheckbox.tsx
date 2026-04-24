@@ -1,5 +1,6 @@
 import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { colors, font, fontSize, spacing } from "../constants/tokens";
+import * as Haptics from "expo-haptics";
 
 interface TaskCheckboxProps {
   text: string;
@@ -15,7 +16,10 @@ export default function TaskCheckbox({
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={onToggle}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        onToggle();
+      }}
       activeOpacity={0.6}
     >
       {/* Checkbox */}
