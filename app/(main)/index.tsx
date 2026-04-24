@@ -1,7 +1,14 @@
-import { useState, useCallback } from "react";
-import { View, Text, ScrollView, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useAuth } from "../../src/hooks/useAuth";
+import { useRouter } from "expo-router";
+import { useProgress } from "../../src/hooks/useProgress";
 import { getDayData } from "../../src/data/challenges";
 import { getQuote } from "../../src/data/quotes";
 import TaskCheckbox from "../../src/components/TaskCheckbox";
@@ -10,31 +17,36 @@ import QuoteCard from "../../src/components/QuoteCard";
 import { colors, font, fontSize, spacing } from "../../src/constants/tokens";
 
 export default function HomeScreen() {
-  // TODO: replace with real progress from Supabase (Day 3)
-  const [currentStage] = useState(1);
-  const [currentDay] = useState(1);
-  const [completedTasks, setCompletedTasks] = useState<Set<string>>(new Set());
+  const {
+    completedTasks,
+    loading,
+    currentStage,
+    currentDay,
+    toggleTask,
+    isDayComplete,
+  } = useProgress();
+  const router = useRouter();
 
   const dayData = getDayData(currentStage, currentDay);
   const quote = getQuote(currentStage, currentDay);
 
-  const toggleTask = useCallback((taskId: string) => {
-    setCompletedTasks((prev) => {
-      const next = new Set(prev);
-      if (next.has(taskId)) {
-        next.delete(taskId);
-      } else {
-        next.add(taskId);
-      }
-      return next;
-    });
-  }, []);
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color={colors.text} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   if (!dayData) return null;
 
   const completedCount = dayData.tasks.filter((t) =>
     completedTasks.has(t.id),
   ).length;
+
+  const dayComplete = isDayComplete(currentStage, currentDay);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -45,10 +57,20 @@ export default function HomeScreen() {
       >
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.stageLabel}>
-            Stage {currentStage} · Day {currentDay}
-          </Text>
-          <Text style={styles.dayTitle}>{dayData.title}</Text>
+          <View style={styles.headerRow}>
+            <View>
+              <Text style={styles.stageLabel}>
+                Stage {currentStage} · Day {currentDay}
+              </Text>
+              <Text style={styles.dayTitle}>{dayData.title}</Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => router.push("/(main)/stages")}
+              activeOpacity={0.6}
+            >
+              <Text style={styles.viewAllLink}>All days →</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.dayDescription}>{dayData.description}</Text>
         </View>
 
@@ -73,12 +95,21 @@ export default function HomeScreen() {
         </View>
 
         {/* Day complete message */}
-        {completedCount === 10 && (
+        {dayComplete && (
           <View style={styles.completeMessage}>
             <Text style={styles.completeText}>Day complete ✓</Text>
             <Text style={styles.completeSubtext}>
               Well done. Carry this clarity forward.
             </Text>
+            {currentDay < 7 && (
+              <TouchableOpacity
+                style={styles.nextButton}
+                onPress={() => router.push("/(main)/stages")}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.nextButtonText}>View progress →</Text>
+              </TouchableOpacity>
+            )}
           </View>
         )}
       </ScrollView>
@@ -91,6 +122,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.background,
   },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   scroll: {
     flex: 1,
   },
@@ -101,6 +137,11 @@ const styles = StyleSheet.create({
   },
   header: {
     marginBottom: spacing.lg,
+  },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
   },
   stageLabel: {
     fontFamily: font.familyLight,
@@ -115,6 +156,12 @@ const styles = StyleSheet.create({
     fontSize: fontSize.heading,
     color: colors.text,
     letterSpacing: -0.5,
+  },
+  viewAllLink: {
+    fontFamily: font.family,
+    fontSize: fontSize.caption,
+    color: colors.textTertiary,
+    marginTop: spacing.xs,
   },
   dayDescription: {
     fontFamily: font.familyLight,
@@ -145,5 +192,17 @@ const styles = StyleSheet.create({
     fontSize: fontSize.caption,
     color: colors.textTertiary,
     marginTop: spacing.xs,
+  },
+  nextButton: {
+    marginTop: spacing.lg,
+    paddingVertical: spacing.md,
+    paddingHorizontal: spacing.xl,
+    borderWidth: 1,
+    borderColor: colors.text,
+  },
+  nextButtonText: {
+    fontFamily: font.familyMedium,
+    fontSize: fontSize.body,
+    color: colors.text,
   },
 });
