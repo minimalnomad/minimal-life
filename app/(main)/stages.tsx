@@ -26,7 +26,7 @@ export default function StagesScreen() {
   const handleDayPress = (stage: number, day: number) => {
     if (!isStageUnlocked(stage)) return;
     goToDay(stage, day);
-    router.back();
+    router.push(`/(main)/day/${stage}-${day}`);
   };
 
   return (
