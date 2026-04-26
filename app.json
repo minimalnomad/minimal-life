@@ -26,6 +26,17 @@
       },
       "package": "com.minimalnomad.minimallife"
     },
-    "plugins": ["expo-router", "expo-font", "expo-sqlite"]
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-sqlite"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "fdc3a66a-e535-415c-8a36-d0508f96086a"
+      }
+    },
+    "owner": "tonozero"
   }
 }
