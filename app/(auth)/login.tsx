@@ -44,6 +44,14 @@ export default function LoginScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>Minimal</Text>
+          <View style={styles.headerActions}>
+            <TouchableOpacity
+              onPress={() => router.push("/(main)/profile")}
+              activeOpacity={0.6}
+            >
+              <Text style={styles.profileLink}>Profile</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.titleLight}>Life</Text>
           <Text style={styles.subtitle}>7 days to a simpler you</Text>
         </View>
@@ -89,6 +97,7 @@ export default function LoginScreen() {
             </TouchableOpacity>
           </Link>
         </View>
+        <Text style={styles.branding}>by Minimal Nomad</Text>
       </View>
     </KeyboardAvoidingView>
   );
@@ -167,6 +176,15 @@ const styles = StyleSheet.create({
     fontFamily: font.familyMedium,
     fontSize: fontSize.caption,
     color: colors.text,
+    textDecorationLine: "underline",
+  },
+  headerActions: {
+    marginTop: spacing.sm,
+  },
+  profileLink: {
+    fontFamily: font.family,
+    fontSize: fontSize.caption,
+    color: colors.textTertiary,
     textDecorationLine: "underline",
   },
 });
