@@ -15,6 +15,8 @@ import TaskCheckbox from "../../src/components/TaskCheckbox";
 import ProgressBar from "../../src/components/ProgressBar";
 import QuoteCard from "../../src/components/QuoteCard";
 import { colors, font, fontSize, spacing } from "../../src/constants/tokens";
+import { Animated } from "react-native";
+import { useRef, useEffect } from "react";
 
 export default function HomeScreen() {
   const {
@@ -47,6 +49,20 @@ export default function HomeScreen() {
   ).length;
 
   const dayComplete = isDayComplete(currentStage, currentDay);
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (dayComplete) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      fadeAnim.setValue(0);
+    }
+  }, [dayComplete]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -101,7 +117,9 @@ export default function HomeScreen() {
 
         {/* Day complete message */}
         {dayComplete && (
-          <View style={styles.completeMessage}>
+          <Animated.View
+            style={[styles.completeMessage, { opacity: fadeAnim }]}
+          >
             <Text style={styles.completeText}>Day complete ✓</Text>
             <Text style={styles.completeSubtext}>
               Well done. Carry this clarity forward.
@@ -115,7 +133,7 @@ export default function HomeScreen() {
                 <Text style={styles.nextButtonText}>View progress →</Text>
               </TouchableOpacity>
             )}
-          </View>
+          </Animated.View>
         )}
       </ScrollView>
     </SafeAreaView>
