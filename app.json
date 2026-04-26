@@ -7,12 +7,18 @@
     "scheme": "minimal-life",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
+    "icon": "./assets/icon.png",
     "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.minimalnomad.minimallife"
+      "bundleIdentifier": "com.minimalnomad.minimallife",
+      "icon": {
+        "source": "./assets/icon.png"
+      }
     },
     "android": {
       "adaptiveIcon": {
