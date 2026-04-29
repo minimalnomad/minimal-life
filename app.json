@@ -15,10 +15,7 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.minimalnomad.minimallife",
-      "icon": {
-        "source": "./assets/icon.png"
-      }
+      "bundleIdentifier": "com.minimalnomad.minimallife"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,17 +23,19 @@
       },
       "package": "com.minimalnomad.minimallife"
     },
-    "plugins": [
-      "expo-router",
-      "expo-font",
-      "expo-sqlite"
-    ],
+    "plugins": ["expo-router", "expo-font", "expo-sqlite"],
     "extra": {
       "router": {},
       "eas": {
         "projectId": "fdc3a66a-e535-415c-8a36-d0508f96086a"
       }
     },
-    "owner": "tonozero"
+    "owner": "tonozero",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/fdc3a66a-e535-415c-8a36-d0508f96086a"
+    }
   }
 }
